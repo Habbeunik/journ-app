@@ -1,3 +1,5 @@
+import AuthLayout from "@/components/Auth/AuthLayout";
+import GoogleAuthButton from "@/components/Google/GoogleAuthButton";
 import {
   Box,
   Stack,
@@ -7,16 +9,17 @@ import {
   FormLabel,
   Typography,
   Divider,
-  Checkbox,
 } from "@mui/joy";
 import Link from "@mui/joy/Link";
 import NextLink from "next/link";
-import GoogleAuthButton from "@/components/Google/GoogleAuthButton";
-import AuthLayout from "@/components/Auth/AuthLayout";
 
 function Form() {
   return (
     <Stack direction="column" spacing={2}>
+      <FormControl>
+        <FormLabel>Full Name</FormLabel>
+        <Input variant="outlined" />
+      </FormControl>
       <FormControl>
         <FormLabel>Email</FormLabel>
         <Input variant="outlined" />
@@ -25,18 +28,12 @@ function Form() {
         <FormLabel>Password</FormLabel>
         <Input type="password" variant="outlined" />
       </FormControl>
-      <Checkbox
-        size="sm"
-        label="Remember me"
-        name="persistent"
-        sx={{ textAlign: "left" }}
-      />
       <Button type="submit">Sign In</Button>
     </Stack>
   );
 }
 
-export default function Home() {
+export default function Register() {
   return (
     <Box
       sx={{
@@ -50,11 +47,11 @@ export default function Home() {
     >
       <AuthLayout>
         <Stack spacing={2}>
-          <Typography level="h3">Sign in</Typography>
+          <Typography level="h3">Register</Typography>
           <Typography level="body-sm">
-            Are you a new user?{" "}
-            <NextLink href="/register" passHref>
-              <Link level="title-sm"> Sign up!</Link>
+            Are you an existing user?{" "}
+            <NextLink href="/" passHref>
+              <Link level="title-sm">Sign in!</Link>
             </NextLink>
           </Typography>
           <GoogleAuthButton />
