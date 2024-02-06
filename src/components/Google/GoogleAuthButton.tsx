@@ -1,16 +1,27 @@
-import Button from "@mui/joy/Button";
-import GoogleIcon from "./GoogleIcon";
+// "use client";
 
-function GoogleAuthButton() {
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+
+import { Fragment } from "react";
+
+interface IGoogleAuthentication {
+  handleSuccess: (credential: CredentialResponse) => void;
+  handleError: () => void;
+}
+
+function GoogleAuthButton({
+  handleError,
+  handleSuccess,
+}: IGoogleAuthentication) {
   return (
-    <Button
-      variant="soft"
-      color="neutral"
-      fullWidth
-      startDecorator={<GoogleIcon />}
-    >
-      Continue with Google
-    </Button>
+    <Fragment>
+      <GoogleLogin
+        shape="pill"
+        onSuccess={handleSuccess}
+        onError={handleError}
+        width={400}
+      />
+    </Fragment>
   );
 }
 
