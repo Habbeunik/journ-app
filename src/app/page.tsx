@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
 	Box,
 	Stack,
@@ -13,52 +14,43 @@ import {
 } from '@mui/joy';
 import Link from '@mui/joy/Link';
 import NextLink from 'next/link';
-import {
-	useSession,
-	signIn,
-	signOut,
-} from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { getSession, signIn } from 'next-auth/react';
 
 import GoogleAuthButton from '@/components/Google/GoogleAuthButton';
 import AuthLayout from '@/components/Auth/AuthLayout';
-import { CredentialResponse } from '@react-oauth/google';
-import {
-	login,
-	loginOrRegisterGoogleUser,
-	verifyGoogleToken,
-} from './actions';
 
 export default function Home() {
-	// async function handleGoogleAuthSuccess({
-	// 	credential,
-	// }: CredentialResponse) {
-	// 	'use server';
+	const [email, setEmail] = useState<string>('emeka@gmail.com');
+	const [password, setPassword] = useState<string>('password');
+	const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
 
-	// 	if (credential) {
-	// 		loginOrRegisterGoogleUser(credential);
-	// 	}
-	// }
+	const router = useRouter();
 
-	// async function handleGoogleAuthError() {
-	// 	// 'use server';
-	// 	console.log('error');
-	// }
+	const isValid =
+		Boolean(email) &&
+		Boolean(password) &&
+		/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
 
-	async function submit(e) {
-		try {
-			e.preventDefault();
+	async function submit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		setIsSigningIn(true);
 
-			signIn('credentials', {
-				email: 'habbs@gams.com',
-				password: 'passes',
-			});
-			// await login(user);
-		} catch (e) {
-			console.log('ERror on Login)04-2304 ', e);
+		const signInPayload = await signIn('credentials', {
+			redirect: false,
+			email,
+			password,
+		});
+		setIsSigningIn(false);
+
+		if (signInPayload?.ok) {
+			setTimeout(async function () {
+				console.log('sesh on login', await getSession());
+			}, 3000);
+			router.push('/app');
 		}
 
-		// mutate data
-		// revalidate cache
+		console.log('sign in payload', signInPayload);
 	}
 
 	return (
@@ -86,31 +78,41 @@ export default function Home() {
 					/>
 					<Divider>or</Divider>
 				</Stack>
-				<Stack
-					component="form"
-					onSubmit={submit}
-					direction="column"
-					spacing={2}>
-					<FormControl>
-						<FormLabel>Email</FormLabel>
-						<Input variant="outlined" name="email" />
-					</FormControl>
-					<FormControl>
-						<FormLabel>Password</FormLabel>
-						<Input
-							name="password"
-							type="password"
-							variant="outlined"
+
+				<form onSubmit={submit}>
+					<Stack direction="column" spacing={2}>
+						<FormControl>
+							<FormLabel>Email</FormLabel>
+							<Input
+								variant="outlined"
+								name="email"
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+									setEmail(e.target.value);
+								}}
+							/>
+						</FormControl>
+						<FormControl>
+							<FormLabel>Password</FormLabel>
+							<Input
+								name="password"
+								type="password"
+								variant="outlined"
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+									setPassword(e.target.value);
+								}}
+							/>
+						</FormControl>
+						<Checkbox
+							size="sm"
+							label="Remember me"
+							name="persistent"
+							sx={{ textAlign: 'left' }}
 						/>
-					</FormControl>
-					<Checkbox
-						size="sm"
-						label="Remember me"
-						name="persistent"
-						sx={{ textAlign: 'left' }}
-					/>
-					<Button type="submit">Sign In</Button>
-				</Stack>
+						<Button loading={isSigningIn} disabled={!isValid} type="submit">
+							Sign In
+						</Button>
+					</Stack>
+				</form>
 			</AuthLayout>
 		</Box>
 	);

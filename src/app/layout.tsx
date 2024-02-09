@@ -32,9 +32,7 @@ export default function RootLayout({
 			<CssBaseline />
 			<GoogleOAuthProvider clientId={googleClientId}>
 				<CssVarsProvider>
-					<body className={inter.className}>
-						{children}
-					</body>
+					<body className={inter.className}>{children}</body>
 				</CssVarsProvider>
 			</GoogleOAuthProvider>
 		</html>
