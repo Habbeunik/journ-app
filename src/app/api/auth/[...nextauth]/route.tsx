@@ -21,6 +21,7 @@ export const authOptions: NextAuthOptions = {
 						credentials.password,
 						user?.password || ''
 					);
+
 					if (user && isRightPassword) {
 						return user;
 					}
