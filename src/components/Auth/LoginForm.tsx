@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	Stack,
 	Input,
@@ -11,7 +11,7 @@ import {
 	Snackbar,
 } from '@mui/joy';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import { isEmailCorrect } from '@/lib/form';
 
 const LoginForm = () => {
