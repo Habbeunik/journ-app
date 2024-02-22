@@ -1,8 +1,7 @@
 import { Typography, Box, Stack, Divider } from '@mui/joy';
 import { getServerSession } from 'next-auth/next';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { authOptions } from '../api/auth/[...nextauth]/route';
-import { getSession } from 'next-auth/react';
 
 function Editor() {
 	return (
@@ -41,13 +40,8 @@ function Editor() {
 }
 
 export default async function App() {
-	// useEffect(function () {
-	// 	(async function session() {
-	// 		const session = await getSession();
-	// 		console.log('SEssion on  app', session);
-	// 	})();
-	// }, []);
 	const session = await getServerSession(authOptions);
 	console.log('session on server', session);
+
 	return <Editor />;
 }

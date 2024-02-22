@@ -1,19 +1,21 @@
 import * as jwt from 'jsonwebtoken';
 
-const JWT_SECRET = 'ksflsj9403DD!';
+class AuthLib {
+	static secret = process.env.NEXTAUTH_SECRET || '';
 
-const auth = {
-	getToken(payload: { [key: string]: any }) {
-		return jwt.sign(payload, JWT_SECRET, {
+	static getToken(payload: { [key: string]: any }) {
+		return jwt.sign(payload, this.secret, {
 			expiresIn: '5d',
 		});
-	},
-	verifyToken(token: string) {
-		return jwt.verify(token, JWT_SECRET);
-	},
-	decodeToken(token: string) {
-		return jwt.decode(token);
-	},
-};
+	}
 
-export default auth;
+	static verifyToken(token: string) {
+		return jwt.verify(token, this.secret);
+	}
+
+	static decodeToken(token: string) {
+		return jwt.decode(token);
+	}
+}
+
+export default AuthLib;

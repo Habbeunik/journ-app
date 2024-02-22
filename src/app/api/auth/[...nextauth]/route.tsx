@@ -1,10 +1,18 @@
 import passwordUtils from '@/lib/password';
-import userRepository from '@/repository/user';
+import UserRepository from '@/repository/user';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
+	pages: {
+		signIn: '/',
+	},
 	providers: [
+		GoogleProvider({
+			clientId: process.env.GOOGLE_CLIENT_ID || '',
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+		}),
 		CredentialsProvider({
 			name: 'Credentials',
 			credentials: {
@@ -16,7 +24,7 @@ export const authOptions: NextAuthOptions = {
 			},
 			async authorize(credentials, req) {
 				if (credentials?.email && credentials?.password) {
-					const user = await userRepository.findByEmail(credentials?.email);
+					const user = await UserRepository.findByEmail(credentials?.email);
 					const isRightPassword = await passwordUtils.isSame(
 						credentials.password,
 						user?.password || ''
@@ -34,7 +42,7 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		async session({ token, session }) {
 			if (token) {
-				session.user.id = token.id;
+				session.user.id = token.id!;
 				session.user.name = token.name;
 				session.user.email = token.email;
 				session.user.image = token.picture;
@@ -43,7 +51,17 @@ export const authOptions: NextAuthOptions = {
 			return session;
 		},
 		async jwt({ token, user }) {
-			const dbUser = await userRepository.findByEmail(token.email!);
+			let dbUser = await UserRepository.findByEmail(token.email!);
+
+			if (!dbUser && token.email) {
+				dbUser = await UserRepository.create({
+					data: { email: token.email, name: token.name, image: token.picture },
+				});
+			}
+
+			if (!dbUser) {
+				return token;
+			}
 
 			return {
 				id: dbUser?.id,

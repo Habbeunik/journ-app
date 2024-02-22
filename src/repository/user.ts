@@ -1,16 +1,15 @@
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
-function findByEmail(email: string) {
-  return prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
+export default class UserRepository {
+	static findByEmail(email: string) {
+		return prisma.user.findUnique({
+			where: {
+				email,
+			},
+		});
+	}
+
+	static create(...args: Parameters<typeof prisma.user.create>) {
+		return prisma.user.create(...args);
+	}
 }
-
-const userRepository = {
-  findByEmail,
-  create: prisma.user.create,
-};
-
-export default userRepository;
