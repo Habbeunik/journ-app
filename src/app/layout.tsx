@@ -4,7 +4,6 @@ import CssBaseline from '@mui/joy/CssBaseline';
 import { CssVarsProvider } from '@mui/joy';
 
 import '@fontsource/inter';
-
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });

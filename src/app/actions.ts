@@ -1,34 +1,7 @@
 'use server';
 
-import auth from '@/lib/auth';
 import passwordUtils from '@/lib/password';
 import userRepository from '@/repository/user';
-
-type LoginPayload = {
-	email: string;
-	password?: string;
-};
-export async function login(payload: LoginPayload) {
-	try {
-		const { email, password } = payload;
-
-		const existingUser = await userRepository.findByEmail(email);
-
-		if (
-			password &&
-			existingUser?.password &&
-			(await passwordUtils.isSame(password, existingUser.password))
-		) {
-			const token = auth.getToken({ id: existingUser?.id });
-
-			return token;
-		}
-
-		throw new Error('Incorrect login data');
-	} catch (e) {
-		throw e;
-	}
-}
 
 type RegisterPayload = {
 	name: string;
