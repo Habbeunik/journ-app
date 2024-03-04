@@ -8,7 +8,6 @@ function SideNav({ children }: { children: ReactNode }) {
 			className="Navigation"
 			sx={{
 				p: 2,
-				// bgcolor: 'background.surface',
 				borderRight: '1px solid',
 				borderColor: 'divider',
 				display: {

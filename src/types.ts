@@ -1,6 +1,3 @@
-import { Prisma } from "@prisma/client";
+import prisma from '@/lib/prisma';
 
-export type User = Prisma.UserMinAggregateOutputType;
-export type CreateUserType = Partial<
-  Omit<User, "id" | "createdAt" | "updatedAt">
->;
+export type Entry = Awaited<ReturnType<typeof prisma.entry.create>>;

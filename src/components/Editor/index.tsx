@@ -1,12 +1,56 @@
 'use client';
 
-import { useState } from 'react';
-import { Typography, Box, Stack, Divider } from '@mui/joy';
+import { useEffect, useRef, useState } from 'react';
+import {
+	Typography,
+	Box,
+	Stack,
+	CircularProgress,
+	Divider,
+	IconButton,
+} from '@mui/joy';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import MicNoneIcon from '@mui/icons-material/MicNone';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
-function Editor() {
-	const [entry, setEntry] = useState<string>(
-		"This is my new entry I don't have stuff to say but I know that I have to type something that would make some sense. What is sense. /n Today is 25th of the year and I don't even know what the fuck is going on "
-	);
+interface IEditorProps {
+	lastUpdatedDate?: string;
+	defaultEntry?: string;
+	onSave?: (entry: string) => void | Promise<void>;
+}
+function Editor(props: IEditorProps) {
+	const { onSave, defaultEntry = '', lastUpdatedDate } = props;
+
+	const [entry, setEntry] = useState<string>('');
+	const [isSaving, setIsSaving] = useState<boolean>(false);
+
+	const inputRef = useRef<HTMLTextAreaElement>(null);
+
+	useEffect(() => {
+		inputRef.current && inputRef.current?.focus();
+	}, []);
+
+	useEffect(() => {
+		setEntry(defaultEntry);
+	}, [defaultEntry]);
+
+	//debounce on save
+	const timerIdRef = useRef<NodeJS.Timeout>();
+	useEffect(() => {
+		if (onSave && Boolean(entry)) {
+			timerIdRef.current = setTimeout(async () => {
+				setIsSaving(true);
+				await onSave(entry);
+				setIsSaving(false);
+			}, 1000);
+		}
+
+		return () => {
+			if (timerIdRef.current) {
+				clearTimeout(timerIdRef.current);
+			}
+		};
+	}, [entry]);
 
 	return (
 		<Box>
@@ -16,21 +60,49 @@ function Editor() {
 					flexDirection: 'column',
 					flex: 1,
 					p: '15px',
-					// maxWidth: '800px',
+					pt: '0px',
+					maxWidth: '1200px',
 					margin: 'auto',
 					minHeight: '60vh',
+					position: 'relative',
 				}}>
-				<Stack direction={'column'} mb={'15px'}>
-					<Typography level={'body-sm'} textAlign={'center'}>
-						28th February 2024 at 16:47
-					</Typography>
-					{/* <Typography level="body-sm">Saving ...</Typography> */}
+				<Stack direction={'row'} spacing={1} py="10px">
+					<IconButton size="sm" variant="soft" disabled>
+						<PlayArrowIcon fontSize="small" />
+					</IconButton>
+
+					<IconButton size="sm" variant="soft" disabled>
+						<MicNoneIcon fontSize="small" />
+					</IconButton>
+
+					<IconButton variant="soft" disabled>
+						<DeleteOutlineIcon fontSize="small" />
+					</IconButton>
 				</Stack>
+				<Divider sx={{ mb: '15px' }} />
+				{lastUpdatedDate && (
+					<Typography level={'body-sm'} textAlign={'center'}>
+						Last Edited: {lastUpdatedDate}
+					</Typography>
+				)}
+				{isSaving && (
+					<Stack
+						direction="row"
+						spacing={1}
+						position="absolute"
+						top={10}
+						right={0}>
+						<CircularProgress size="sm" variant="plain" />
+						<Typography level="body-sm">Saving</Typography>
+					</Stack>
+				)}
 				<textarea
+					ref={inputRef}
 					value={entry}
 					onChange={(e) => {
 						setEntry(e.target.value);
 					}}
+					placeholder="Write something here..."
 					style={{
 						width: '100%',
 						flex: 1,

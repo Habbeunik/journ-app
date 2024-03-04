@@ -1,22 +1,14 @@
-import type { Metadata, Viewport } from 'next';
+'use client';
+
 import { Inter } from 'next/font/google';
 import CssBaseline from '@mui/joy/CssBaseline';
 import { CssVarsProvider } from '@mui/joy';
 
 import '@fontsource/inter';
 import './globals.css';
+import { SessionProvider } from 'next-auth/react';
 
 const inter = Inter({ subsets: ['latin'] });
-
-export const viewport: Viewport = {
-	width: 'device-width',
-	initialScale: 1,
-};
-
-export const metadata: Metadata = {
-	title: 'Journ App',
-	description: 'Journal next app',
-};
 
 export default function RootLayout({
 	children,
@@ -27,7 +19,9 @@ export default function RootLayout({
 		<html lang="en">
 			<CssBaseline />
 			<CssVarsProvider>
-				<body className={inter.className}>{children}</body>
+				<SessionProvider>
+					<body className={inter.className}>{children}</body>
+				</SessionProvider>
 			</CssVarsProvider>
 		</html>
 	);

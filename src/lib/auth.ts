@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
 
 			return session;
 		},
-		async jwt({ token, user }) {
+		async jwt({ token }) {
 			let dbUser = await UserRepository.findByEmail(token.email!);
 
 			if (!dbUser && token.email) {
