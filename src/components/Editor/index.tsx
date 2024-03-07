@@ -17,9 +17,10 @@ interface IEditorProps {
 	lastUpdatedDate?: string;
 	defaultEntry?: string;
 	onSave?: (entry: string) => void | Promise<void>;
+	onDelete?: () => void;
 }
 function Editor(props: IEditorProps) {
-	const { onSave, defaultEntry = '', lastUpdatedDate } = props;
+	const { onSave, onDelete, defaultEntry = '', lastUpdatedDate } = props;
 
 	const [entry, setEntry] = useState<string>('');
 	const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -66,25 +67,33 @@ function Editor(props: IEditorProps) {
 					minHeight: '60vh',
 					position: 'relative',
 				}}>
-				<Stack direction={'row'} spacing={1} py="10px">
-					<IconButton size="sm" variant="soft" disabled>
-						<PlayArrowIcon fontSize="small" />
-					</IconButton>
+				<Stack
+					direction={'row'}
+					spacing={3}
+					justifyContent={'center'}
+					alignItems={'center'}
+					p="10px">
+					{lastUpdatedDate && (
+						<Typography level={'body-sm'} textAlign={'center'}>
+							Last Edited: {lastUpdatedDate}
+						</Typography>
+					)}
 
-					<IconButton size="sm" variant="soft" disabled>
-						<MicNoneIcon fontSize="small" />
-					</IconButton>
+					<Stack direction={'row'}>
+						<IconButton size="sm" variant="plain">
+							<PlayArrowIcon fontSize="small" />
+						</IconButton>
 
-					<IconButton variant="soft" disabled>
-						<DeleteOutlineIcon fontSize="small" />
-					</IconButton>
+						<IconButton size="sm" variant="plain">
+							<MicNoneIcon fontSize="small" />
+						</IconButton>
+
+						<IconButton variant="plain" onClick={onDelete}>
+							<DeleteOutlineIcon fontSize="small" />
+						</IconButton>
+					</Stack>
 				</Stack>
-				<Divider sx={{ mb: '15px' }} />
-				{lastUpdatedDate && (
-					<Typography level={'body-sm'} textAlign={'center'}>
-						Last Edited: {lastUpdatedDate}
-					</Typography>
-				)}
+
 				{isSaving && (
 					<Stack
 						direction="row"

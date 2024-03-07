@@ -29,3 +29,11 @@ export async function postEntry(payload: {
 
 	return res.json();
 }
+
+export async function deleteEntry(entryId: string) {
+	const res = await fetch(`/api/entry/${entryId}`, {
+		method: 'DELETE',
+	});
+
+	return res.json();
+}

@@ -8,7 +8,9 @@ export const today = () => {
 };
 
 type CustomDate = Date | string | null;
-export function getLastEditedDateString(date: CustomDate) {
+export function getLastEditedDateString(date?: CustomDate) {
+	if (!date) return;
+
 	return `${moment(date).format('dddd Do  MMMM YYYY')} at ${moment(date).format(
 		'LT'
 	)}`;

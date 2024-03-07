@@ -11,4 +11,16 @@ export const entryRepository = {
 			data: { text: payload.text },
 		});
 	},
+
+	delete(id: string) {
+		return prisma.entry.delete({
+			where: { id },
+		});
+	},
+
+	getById(id: string) {
+		return prisma.entry.findUnique({
+			where: { id },
+		});
+	},
 };

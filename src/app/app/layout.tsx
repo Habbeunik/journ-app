@@ -1,11 +1,15 @@
 import { ReactNode } from 'react';
 import { getServerSession } from 'next-auth';
+import moment from 'moment';
 
 import { authOptions } from '@/lib/auth';
 import { Dashboard, Header, SideBar } from '@/components/Layout';
-import { EntryGroupNav, TodaysEntryNav } from '@/components/EntryNav';
+import {
+	EntryGroupContainer,
+	EntryGroupNav,
+	TodaysEntryNav,
+} from '@/components/Entry/EntryNav';
 import UserRepository from '@/repository/user';
-import moment from 'moment';
 import { Entry } from '@/types';
 
 export default async function Layout({ children }: { children: ReactNode }) {
@@ -30,12 +34,18 @@ export default async function Layout({ children }: { children: ReactNode }) {
 			<SideBar>
 				<TodaysEntryNav
 					subtitle={todayEntry?.text ?? '...'}
-					day={todayEntry?.createdAt?.toDateString() ?? ''}
 					time={todayEntry?.createdAt?.toLocaleTimeString() ?? ''}
 				/>
-				{Object.entries(entryToMonthMap).map(([month, entries]) => (
-					<EntryGroupNav key={month} title={month} entries={entries} />
-				))}
+				<EntryGroupContainer>
+					{Object.entries(entryToMonthMap).map(([month, entries], index) => (
+						<EntryGroupNav
+							defaultExpanded={index === 0}
+							key={month}
+							title={month}
+							entries={entries}
+						/>
+					))}
+				</EntryGroupContainer>
 			</SideBar>
 			{children}
 		</Dashboard>
