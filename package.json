@@ -16,6 +16,7 @@
     "@mui/joy": "5.0.0-beta.22",
     "@mui/material": "^5.15.5",
     "@prisma/client": "5.8.1",
+    "@types/dom-speech-recognition": "^0.0.4",
     "bcrypt": "^5.1.1",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",

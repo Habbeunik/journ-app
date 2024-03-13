@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import {
 	Typography,
 	Box,
@@ -8,9 +8,13 @@ import {
 	CircularProgress,
 	Divider,
 	IconButton,
+	LinearProgress,
 } from '@mui/joy';
+import { iconButtonClasses } from '@mui/joy/IconButton';
+import { linearProgressClasses } from '@mui/joy/LinearProgress';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import MicNoneIcon from '@mui/icons-material/MicNone';
+import MicOffIcon from '@mui/icons-material/MicOff';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 interface IEditorProps {
@@ -47,11 +51,30 @@ function Editor(props: IEditorProps) {
 		}
 
 		return () => {
-			if (timerIdRef.current) {
-				clearTimeout(timerIdRef.current);
-			}
+			clearTimeout(timerIdRef.current);
 		};
 	}, [entry]);
+
+	const [recognizedTexts, setRecognizedTexts] = useState<string>('');
+	const recognition = useSpeechRecogniiton({
+		onInput(transcript) {
+			setRecognizedTexts((prev) => `${prev} ${transcript}`);
+		},
+	});
+
+	const entryTimerRef = useRef<NodeJS.Timeout>();
+	useEffect(() => {
+		if (recognizedTexts) {
+			entryTimerRef.current = setTimeout(() => {
+				setEntry((prev) => prev + recognizedTexts);
+				setRecognizedTexts('');
+			}, 2000);
+		}
+
+		return () => {
+			clearTimeout(entryTimerRef.current);
+		};
+	}, [recognizedTexts]);
 
 	return (
 		<Box>
@@ -84,13 +107,26 @@ function Editor(props: IEditorProps) {
 							<PlayArrowIcon fontSize="small" />
 						</IconButton>
 
-						<IconButton size="sm" variant="plain">
+						<SpeechInputControl
+							isActive={recognition.isUsingSpeech}
+							isListening={recognition.isListenting}
+							onStart={recognition.start}
+							onStop={recognition.stop}
+						/>
+
+						{/* <IconButton
+							size="sm"
+							variant="plain"
+							sx={{ borderRadius: '50%' }}
+							onClick={() => {
+								recognition.start();
+							}}>
 							<MicNoneIcon fontSize="small" />
 						</IconButton>
 
 						<IconButton variant="plain" onClick={onDelete}>
 							<DeleteOutlineIcon fontSize="small" />
-						</IconButton>
+						</IconButton> */}
 					</Stack>
 				</Stack>
 
@@ -107,7 +143,7 @@ function Editor(props: IEditorProps) {
 				)}
 				<textarea
 					ref={inputRef}
-					value={entry}
+					value={entry + recognizedTexts}
 					onChange={(e) => {
 						setEntry(e.target.value);
 					}}
@@ -131,3 +167,99 @@ function Editor(props: IEditorProps) {
 }
 
 export default Editor;
+
+const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+recognition.continuous = true;
+
+type SpeechRecognitionHookArg = {
+	onInput: (transcript: string) => void;
+};
+function useSpeechRecogniiton(opts: SpeechRecognitionHookArg) {
+	const { onInput } = opts;
+
+	const [isUsingSpeech, setIsUsingSpeech] = useState<boolean>(false);
+	const [isListenting, setIsListening] = useState<boolean>(false);
+
+	useEffect(() => {
+		recognition.onend = () => {
+			setIsUsingSpeech(false);
+		};
+		recognition.onresult = ({ results, resultIndex }) => {
+			onInput(results[resultIndex][0].transcript);
+		};
+		recognition.onsoundstart = () => {
+			setIsListening(true);
+		};
+		recognition.onsoundend = () => {
+			setIsListening(false);
+		};
+	}, [onInput]);
+
+	return {
+		isUsingSpeech,
+		isListenting,
+		start: () => {
+			recognition.start();
+			setIsUsingSpeech(true);
+		},
+		stop: () => {
+			recognition.stop();
+			recognition.abort();
+			setIsUsingSpeech(false);
+			setIsListening(false);
+		},
+	};
+}
+
+interface ISpeechInputControlProps {
+	isListening: boolean;
+	isActive: boolean;
+	onStart: () => void;
+	onStop: () => void;
+}
+const SpeechInputControl = (props: ISpeechInputControlProps) => {
+	const { isListening, isActive, onStart, onStop } = props;
+
+	return (
+		<Stack
+			slots={{ root: 'button' }}
+			direction="row"
+			alignItems="center"
+			justifyContent="space-between"
+			sx={{
+				bgcolor: isActive ? (isListening ? 'orange' : 'blue') : 'transparent',
+				borderRadius: '30px',
+				[`& .${iconButtonClasses.root}:hover`]: {
+					bgcolor: 'transparent',
+				},
+				[`& .${linearProgressClasses.root}`]: { width: '50px' },
+				[`& .${linearProgressClasses.root}::before`]: { color: 'blue' },
+				pr: isActive ? '15px' : 0,
+				width: isActive ? '98px' : '32px',
+				transition: 'all 100ms ease-out',
+			}}
+			onClick={() => {
+				isActive ? onStop() : onStart();
+			}}>
+			<IconButton size="sm">
+				{isActive ? <MicOffIcon sx={{ color: 'white' }} /> : <MicNoneIcon />}
+			</IconButton>
+			{isActive && (
+				<>
+					{isListening ? (
+						<Typography
+							level="body-xs"
+							sx={{ color: 'white', cursor: 'pointer' }}
+							width={'50px'}>
+							listening...
+						</Typography>
+					) : (
+						<Box width={'50px'}>
+							<LinearProgress thickness={1} size="sm" sx={{ width: '50px' }} />
+						</Box>
+					)}
+				</>
+			)}
+		</Stack>
+	);
+};
