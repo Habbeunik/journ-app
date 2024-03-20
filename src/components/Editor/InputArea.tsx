@@ -30,4 +30,6 @@ const InputArea = forwardRef((props: IInputAreaProps, ref) => {
 	);
 });
 
+InputArea.displayName = 'InputArea';
+
 export default InputArea;
