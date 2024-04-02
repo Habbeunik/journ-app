@@ -12,12 +12,12 @@ import useSpeechRecogniiton from '@/hooks/useSpeechRecognition';
 
 interface IEditorControlsProps {
 	isSaving?: boolean;
-	lastUpdatedDate?: string;
+	dateCreated?: string;
 	onDelete?: () => void;
 	onSpeechIput: (text: string) => void;
 }
 const EditorControls = (props: IEditorControlsProps) => {
-	const { isSaving, lastUpdatedDate, onDelete, onSpeechIput } = props;
+	const { isSaving, dateCreated, onDelete, onSpeechIput } = props;
 
 	const recognition = useSpeechRecogniiton({
 		onInput: onSpeechIput,
@@ -25,15 +25,15 @@ const EditorControls = (props: IEditorControlsProps) => {
 
 	return (
 		<Stack
-			direction={'row'}
-			spacing={3}
+			direction={{ xs: 'column', sm: 'row' }}
+			spacing={{ xs: 1, sm: 3 }}
 			justifyContent={'center'}
 			alignItems={'center'}
 			position={'relative'}
 			p="10px">
-			{lastUpdatedDate && (
-				<Typography level={'body-sm'} textAlign={'center'}>
-					Last Edited: {lastUpdatedDate}
+			{dateCreated && (
+				<Typography level={'body-xs'} textAlign={'center'}>
+					Created: {dateCreated}
 				</Typography>
 			)}
 

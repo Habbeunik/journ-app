@@ -12,7 +12,7 @@ export default function Home() {
 				flexDirection: 'column',
 				justifyContent: 'center',
 				alignItems: 'center',
-				padding: '6rem',
+				padding: { xs: '20px', md: '6rem' },
 				minHeight: '100vh',
 			}}>
 			<AuthLayout>

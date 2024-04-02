@@ -8,13 +8,13 @@ import InputArea from './InputArea';
 import EditorControls from './Controls';
 
 interface IEditorProps {
-	lastUpdatedDate?: string;
+	dateCreated?: string;
 	defaultEntry?: string;
 	onSave?: (entry: string) => void | Promise<void>;
 	onDelete?: () => void;
 }
 function Editor(props: IEditorProps) {
-	const { onSave, onDelete, defaultEntry = '', lastUpdatedDate } = props;
+	const { onSave, onDelete, defaultEntry = '', dateCreated } = props;
 
 	const [entry, setEntry] = useState<string>('');
 	const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -67,7 +67,7 @@ function Editor(props: IEditorProps) {
 				}}>
 				<EditorControls
 					isSaving={isSaving}
-					lastUpdatedDate={lastUpdatedDate}
+					dateCreated={dateCreated}
 					onSpeechIput={(transcript) => {
 						if (transcript.trim()) {
 							setEntry((prev) => prev + transcript);

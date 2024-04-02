@@ -1,5 +1,5 @@
 import { Typography, Box, Stack, IconButton } from '@mui/joy';
-import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { ReactNode } from 'react';
 
 function AuthLayout({ children }: { children: ReactNode }) {
@@ -17,9 +17,9 @@ function AuthLayout({ children }: { children: ReactNode }) {
 							width: '50px',
 							mr: '15px',
 						}}>
-						<NotesRoundedIcon />
+						<EditNoteIcon />
 					</IconButton>
-					<Typography level="h1">Journ App.</Typography>
+					<Typography level="h1">JournApp</Typography>
 				</Stack>
 				<Typography>
 					Unlike other journaling platforms, you can write as much and as often

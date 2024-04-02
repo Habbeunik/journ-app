@@ -73,7 +73,7 @@ export default function EntryPage(props: IEntryPageProps) {
 				<Editor
 					defaultEntry={entry.text}
 					onSave={handleSave}
-					lastUpdatedDate={getLastEditedDateString(entry?.updatedAt)}
+					dateCreated={getLastEditedDateString(entry?.createdAt)}
 					onDelete={() => {
 						setModalState({ open: true, isDeleting: false });
 					}}

@@ -34,14 +34,16 @@ export default function App() {
 			setTodayEntry(res.entry);
 		}
 
-		handleFetchTodayEntry();
+		if (session) {
+			handleFetchTodayEntry();
+		}
 	}, [session]);
 
 	return (
 		<Editor
 			onSave={handleSave}
 			defaultEntry={todayEntry?.text}
-			lastUpdatedDate={getLastEditedDateString(todayEntry?.updatedAt)}
+			dateCreated={getLastEditedDateString(todayEntry?.createdAt)}
 		/>
 	);
 }
