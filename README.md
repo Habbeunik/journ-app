@@ -1,6 +1,6 @@
 [Journal App](https://journ-app.vercel.app)
 
-![Page Demo](public/journ_demo.gif)
+![Page Demo](public/jorn_demo.gif)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
