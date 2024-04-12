@@ -57,16 +57,16 @@ function Header({ userName, userPic }: IHeaderProps) {
 						height: '100%',
 					}}>
 					<List>
-						<ListItem key={'entries'}>
-							<Link href="/app/entry">
+						<Link href="/app/entry">
+							<ListItem key={'entries'}>
 								<ListItemButton>
 									<IconButton size="md">
 										<EditNoteIcon />
 									</IconButton>
 									View Entries
 								</ListItemButton>
-							</Link>
-						</ListItem>
+							</ListItem>
+						</Link>
 
 						<ListItem key={'logout'}>
 							<ListItemButton

@@ -20,8 +20,10 @@ export default function Home() {
 					<Typography level="h3">Login</Typography>
 					<Typography level="body-sm">
 						Are you a new user?{' '}
-						<NextLink href="/register" passHref>
-							<Link level="title-sm"> Register!</Link>
+						<NextLink href="/register">
+							<Link component="span" level="title-sm">
+								Register!
+							</Link>
 						</NextLink>
 					</Typography>
 					<GoogleSignIn />
