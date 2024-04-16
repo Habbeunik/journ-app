@@ -1,6 +1,9 @@
 [Journal App](https://journ-app.vercel.app)
 
-![Page Demo](public/jorn_demo.gif)
+Journal App is a simple journaling web app built with Next.js. It allows users to create journal entries with text, images and tags.
+
+![Page Demo](public/journ_demo.gif)
+![Page Demo 1](public/journ_demo_1.gif)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
