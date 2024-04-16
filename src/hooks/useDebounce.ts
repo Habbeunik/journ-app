@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-export const useDebounceEffect = (
+export const useDebouncedEffect = (
 	cb: () => void,
 	dep: any[] = [],
 	delay = 1000
@@ -15,5 +15,5 @@ export const useDebounceEffect = (
 		return () => {
 			clearTimeout(timerRef.current);
 		};
-	}, dep);
+	}, [dep]);
 };

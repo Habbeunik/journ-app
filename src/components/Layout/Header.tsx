@@ -18,6 +18,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import React from 'react';
 import Sheet from '@mui/joy/Sheet';
 import Link from 'next/link';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { useColorScheme } from '@mui/joy/styles';
 
 interface IHeaderProps {
 	userName?: string;
@@ -25,6 +27,7 @@ interface IHeaderProps {
 }
 function Header({ userName, userPic }: IHeaderProps) {
 	const [openDrawer, setOpenDrawer] = React.useState(false);
+	const { mode, setMode } = useColorScheme();
 
 	return (
 		<React.Fragment>
@@ -137,6 +140,10 @@ function Header({ userName, userPic }: IHeaderProps) {
 							/>
 						</Stack>
 						<IconButton
+							onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
+							<DarkModeIcon />
+						</IconButton>
+						<IconButton
 							aria-label="logout"
 							onClick={() => {
 								signOut();
@@ -146,6 +153,10 @@ function Header({ userName, userPic }: IHeaderProps) {
 					</Stack>
 
 					<Box sx={{ display: { xs: 'block', md: 'none' } }}>
+						<IconButton
+							onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
+							<DarkModeIcon />
+						</IconButton>
 						<IconButton
 							aria-label="menu"
 							onClick={() => {

@@ -1,5 +1,6 @@
 'use client';
 
+import { useColorScheme } from '@mui/joy/styles';
 import AccordionGroup from '@mui/joy/AccordionGroup';
 import Accordion from '@mui/joy/Accordion';
 import AccordionDetails, {
@@ -87,10 +88,13 @@ interface IEntryNavProps {
 }
 function EntryNav(props: IEntryNavProps) {
 	const { title, subtitle, time, isActive, href, hideBottomDivider } = props;
+	const { mode } = useColorScheme();
+	const activeHoverBg = mode === 'dark' ? '#ffffff14' : '#0000000f';
+
 	return (
 		<Link href={href}>
 			<Box
-				bgcolor={isActive ? '#ece9e9' : 'transparent'}
+				bgcolor={isActive ? activeHoverBg : 'transparent'}
 				borderRadius={'5px'}
 				p={'10px'}
 				pb={'0px'}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/joy/Box';
 
-import { useDebounceEffect } from '@/hooks/useDebounce';
+import { useDebouncedEffect } from '@/hooks/useDebounce';
 import InputArea from './InputArea';
 import EditorControls from './Controls';
 
@@ -29,7 +29,7 @@ function Editor(props: IEditorProps) {
 		setEntry(defaultEntry);
 	}, [defaultEntry]);
 
-	useDebounceEffect(async () => {
+	useDebouncedEffect(async () => {
 		if (onSave && entry !== defaultEntry) {
 			setIsSaving(true);
 			await onSave(entry);
@@ -39,17 +39,13 @@ function Editor(props: IEditorProps) {
 
 	const [recognizedTexts, setRecognizedTexts] = useState<string>('');
 
-	useDebounceEffect(
-		() => {
-			if (recognizedTexts) {
-				setEntry((prev) => prev + recognizedTexts);
-				setRecognizedTexts('');
-				inputRef.current?.focus();
-			}
-		},
-		[recognizedTexts],
-		2000
-	);
+	useEffect(() => {
+		if (recognizedTexts) {
+			setEntry((prev) => prev + recognizedTexts);
+			setRecognizedTexts('');
+			inputRef.current?.focus();
+		}
+	}, [recognizedTexts]);
 
 	return (
 		<Box>
@@ -62,7 +58,7 @@ function Editor(props: IEditorProps) {
 					pt: '0px',
 					maxWidth: '1200px',
 					margin: 'auto',
-					minHeight: '60vh',
+					minHeight: '100%',
 					position: 'relative',
 				}}>
 				<EditorControls
@@ -70,7 +66,7 @@ function Editor(props: IEditorProps) {
 					dateCreated={dateCreated}
 					onSpeechIput={(transcript) => {
 						if (transcript.trim()) {
-							setEntry((prev) => prev + transcript);
+							setRecognizedTexts((prev) => prev + transcript);
 						}
 					}}
 					onDelete={onDelete}

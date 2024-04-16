@@ -3,6 +3,7 @@
 import { Inter } from 'next/font/google';
 import CssBaseline from '@mui/joy/CssBaseline';
 import { CssVarsProvider } from '@mui/joy';
+import { getInitColorSchemeScript } from '@mui/joy/styles';
 
 import '@fontsource/inter';
 import './globals.css';
@@ -20,7 +21,10 @@ export default function RootLayout({
 			<CssBaseline />
 			<CssVarsProvider>
 				<SessionProvider>
-					<body className={inter.className}>{children}</body>
+					<body className={inter.className}>
+						{getInitColorSchemeScript({ defaultMode: 'system' })}
+						{children}
+					</body>
 				</SessionProvider>
 			</CssVarsProvider>
 		</html>

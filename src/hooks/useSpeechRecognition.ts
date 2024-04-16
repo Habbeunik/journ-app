@@ -12,6 +12,7 @@ const useSpeechRecogniiton = (opts: SpeechRecognitionHookArg) => {
 		new webkitSpeechRecognition() || new SpeechRecognition()
 	);
 	recognition.current.continuous = true;
+	recognition.current.interimResults = false;
 
 	const [isUsingSpeech, setIsUsingSpeech] = useState<boolean>(false);
 	const [isListenting, setIsListening] = useState<boolean>(false);

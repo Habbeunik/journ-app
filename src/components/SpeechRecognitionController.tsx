@@ -5,7 +5,7 @@ import Typography from '@mui/joy/Typography';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import MicOffIcon from '@mui/icons-material/MicOff';
 
-import { useDebounceEffect } from '@/hooks/useDebounce';
+import { useDebouncedEffect } from '@/hooks/useDebounce';
 
 interface ISpeechRecognitionControllerProps {
 	isListening: boolean;
@@ -20,7 +20,7 @@ const SpeechRecognitionController = (
 	const { isListening, isActive, onStart, onStop } = props;
 
 	const [showText, setShowText] = useState(false);
-	useDebounceEffect(
+	useDebouncedEffect(
 		() => {
 			setShowText(isListening);
 		},

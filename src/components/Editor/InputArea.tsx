@@ -1,4 +1,5 @@
 import { LegacyRef, forwardRef } from 'react';
+import { useColorScheme } from '@mui/joy/styles';
 
 interface IInputAreaProps {
 	value: string;
@@ -6,6 +7,7 @@ interface IInputAreaProps {
 }
 const InputArea = forwardRef((props: IInputAreaProps, ref) => {
 	const { value, onChange } = props;
+	const { mode } = useColorScheme();
 	return (
 		<textarea
 			ref={ref as LegacyRef<HTMLTextAreaElement>}
@@ -24,7 +26,7 @@ const InputArea = forwardRef((props: IInputAreaProps, ref) => {
 				fontFamily: 'var(--joy-fontFamily-display)',
 				lineHeight: '30px',
 				background: 'none',
-				color: 'black',
+				color: mode === 'dark' ? 'white' : 'black',
 			}}
 		/>
 	);
