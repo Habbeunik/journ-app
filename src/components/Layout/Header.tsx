@@ -62,7 +62,10 @@ function Header({ userName, userPic }: IHeaderProps) {
 					<List>
 						<Link href="/app/entry">
 							<ListItem key={'entries'}>
-								<ListItemButton>
+								<ListItemButton
+									onClick={() => {
+										setOpenDrawer(false);
+									}}>
 									<IconButton size="md">
 										<EditNoteIcon />
 									</IconButton>
@@ -74,6 +77,7 @@ function Header({ userName, userPic }: IHeaderProps) {
 						<ListItem key={'logout'}>
 							<ListItemButton
 								onClick={() => {
+									setOpenDrawer(false);
 									signOut();
 								}}>
 								<IconButton aria-label="logout">

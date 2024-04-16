@@ -8,7 +8,7 @@ export default async function EntryPage() {
 	const session = await getServerSession(authOptions);
 	return (
 		session?.user && (
-			<Box p={1}>
+			<Box px={2}>
 				<EntryList userId={session.user.id} />
 			</Box>
 		)

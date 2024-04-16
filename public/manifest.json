@@ -1,0 +1,22 @@
+{
+	"lang": "en-us",
+	"name": "Journ App",
+	"short_name": "JournApp",
+	"description": "A simple journaling web app built with Next.js. It allows users to create journal entries with text, images and tags",
+	"scope": "/",
+	"start_url": "/",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff",
+	"orientation": "potrait",
+	"display": "standalone",
+	"icons": [
+		{
+			"src": "/icon-512.png",
+			"sizes": "512x512"
+		},
+		{
+			"src": "/icon-192.png",
+			"sizes": "192x192"
+		}
+	]
+}
