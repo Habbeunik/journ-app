@@ -10,6 +10,7 @@ const GoogleSignIn = () => {
 			variant="soft"
 			color="neutral"
 			fullWidth
+			size="lg"
 			startDecorator={<GoogleIcon />}
 			onClick={() => {
 				signIn('google', { callbackUrl: '/app' });

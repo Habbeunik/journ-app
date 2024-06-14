@@ -1,17 +1,9 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import {
-	Stack,
-	Input,
-	Button,
-	FormControl,
-	FormLabel,
-	Checkbox,
-	Snackbar,
-} from '@mui/joy';
+import React from 'react';
+import { Stack, Input, Button, FormControl, FormLabel, Snackbar } from '@mui/joy';
 import { useRouter } from 'next/navigation';
-import { signIn, signOut } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { isEmailCorrect } from '@/lib/form';
 
 const LoginForm = () => {
@@ -23,8 +15,7 @@ const LoginForm = () => {
 
 	const router = useRouter();
 
-	const formIsValid =
-		Boolean(email) && Boolean(password) && isEmailCorrect(email);
+	const formIsValid = Boolean(email) && Boolean(password) && isEmailCorrect(email);
 
 	async function submit(e: React.FormEvent<HTMLFormElement>) {
 		try {
@@ -58,6 +49,7 @@ const LoginForm = () => {
 					<Input
 						variant="outlined"
 						name="email"
+						size="lg"
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 							setEmail(e.target.value);
 						}}
@@ -68,19 +60,14 @@ const LoginForm = () => {
 					<Input
 						name="password"
 						type="password"
+						size="lg"
 						variant="outlined"
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 							setPassword(e.target.value);
 						}}
 					/>
 				</FormControl>
-				<Checkbox
-					size="sm"
-					label="Remember me"
-					name="persistent"
-					sx={{ textAlign: 'left' }}
-				/>
-				<Button loading={isLogginIn} disabled={!formIsValid} type="submit">
+				<Button size="lg" loading={isLogginIn} disabled={!formIsValid} type="submit">
 					Login
 				</Button>
 			</Stack>
@@ -92,16 +79,11 @@ const LoginForm = () => {
 				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 				onClose={() => setError(false)}
 				endDecorator={
-					<Button
-						onClick={() => setError(false)}
-						size="sm"
-						variant="soft"
-						color="danger">
+					<Button onClick={() => setError(false)} size="sm" variant="soft" color="danger">
 						Dismiss
 					</Button>
 				}>
-				Cannot login at this moment. Please check your credentials and try
-				again.
+				Cannot login at this moment. Please check your credentials and try again.
 			</Snackbar>
 		</form>
 	);

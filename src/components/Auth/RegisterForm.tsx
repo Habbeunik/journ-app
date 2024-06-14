@@ -1,14 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-	Stack,
-	Input,
-	Button,
-	FormControl,
-	FormLabel,
-	Snackbar,
-} from '@mui/joy';
+import { Stack, Input, Button, FormControl, FormLabel, Snackbar } from '@mui/joy';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -24,11 +17,7 @@ const RegisterForm = () => {
 	const [error, setError] = React.useState<string>('');
 	const router = useRouter();
 
-	const formIsValid =
-		Boolean(email) &&
-		Boolean(password) &&
-		Boolean(name) &&
-		isEmailCorrect(email);
+	const formIsValid = Boolean(email) && Boolean(password) && Boolean(name) && isEmailCorrect(email);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -61,6 +50,7 @@ const RegisterForm = () => {
 					<Input
 						name="name"
 						variant="outlined"
+						size="lg"
 						value={name}
 						onChange={(e) => {
 							setName(e.target.value);
@@ -71,6 +61,7 @@ const RegisterForm = () => {
 					<FormLabel>Email</FormLabel>
 					<Input
 						name="email"
+						size="lg"
 						variant="outlined"
 						value={email}
 						onChange={(e) => {
@@ -82,6 +73,7 @@ const RegisterForm = () => {
 					<FormLabel>Password</FormLabel>
 					<Input
 						name="password"
+						size="lg"
 						type="password"
 						variant="outlined"
 						value={password}
@@ -90,7 +82,7 @@ const RegisterForm = () => {
 						}}
 					/>
 				</FormControl>
-				<Button loading={isSubmitting} type="submit" disabled={!formIsValid}>
+				<Button size="lg" loading={isSubmitting} type="submit" disabled={!formIsValid}>
 					Register
 				</Button>
 			</Stack>
@@ -102,11 +94,7 @@ const RegisterForm = () => {
 				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 				onClose={() => setError('')}
 				endDecorator={
-					<Button
-						onClick={() => setError('')}
-						size="sm"
-						variant="soft"
-						color="danger">
+					<Button onClick={() => setError('')} size="sm" variant="soft" color="danger">
 						Dismiss
 					</Button>
 				}>

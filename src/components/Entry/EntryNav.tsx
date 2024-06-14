@@ -3,12 +3,8 @@
 import { useColorScheme } from '@mui/joy/styles';
 import AccordionGroup from '@mui/joy/AccordionGroup';
 import Accordion from '@mui/joy/Accordion';
-import AccordionDetails, {
-	accordionDetailsClasses,
-} from '@mui/joy/AccordionDetails';
-import AccordionSummary, {
-	accordionSummaryClasses,
-} from '@mui/joy/AccordionSummary';
+import AccordionDetails, { accordionDetailsClasses } from '@mui/joy/AccordionDetails';
+import AccordionSummary, { accordionSummaryClasses } from '@mui/joy/AccordionSummary';
 import { Typography, Box, Stack, Divider } from '@mui/joy';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import Link from 'next/link';
@@ -99,21 +95,17 @@ function EntryNav(props: IEntryNavProps) {
 				p={'10px'}
 				pb={'0px'}
 				sx={{ transition: 'all 0.3s ease' }}>
-				<Typography level={'title-sm'} mb={'5px'}>
+				<Typography level={'title-md'} mb={'5px'}>
 					{title}
 				</Typography>
-				<Typography level={'body-sm'} lineHeight={1.3}>
-					{subtitle.slice(0, MAX_CHARACTERS_IN_SUBTITLE)}{' '}
-					{subtitle.length < MAX_CHARACTERS_IN_SUBTITLE ? '' : '...'}
+				<Typography level={'body-md'} lineHeight={1.3}>
+					{subtitle.slice(0, MAX_CHARACTERS_IN_SUBTITLE)} {subtitle.length < MAX_CHARACTERS_IN_SUBTITLE ? '' : '...'}
 				</Typography>
 				<Stack direction={'row'} spacing={1} mt="5px" mb={'10px'}>
 					<EditNoteIcon fontSize={'small'} />
 					{time && <Typography level={'body-xs'}>At {time}</Typography>}
 				</Stack>
-				<Divider
-					sx={{ opacity: isActive || hideBottomDivider ? 0 : 1 }}
-					color="#ece9e9"
-				/>
+				<Divider sx={{ opacity: isActive || hideBottomDivider ? 0 : 1 }} color="#ece9e9" />
 			</Box>
 		</Link>
 	);
@@ -121,19 +113,8 @@ function EntryNav(props: IEntryNavProps) {
 
 export default EntryNav;
 
-interface TodaysEntryNavProps
-	extends Omit<
-		IEntryNavProps,
-		'isActive' | 'href' | 'title' | 'hideBottomDivider'
-	> {}
+interface TodaysEntryNavProps extends Omit<IEntryNavProps, 'isActive' | 'href' | 'title' | 'hideBottomDivider'> {}
 export function TodaysEntryNav(props: TodaysEntryNavProps) {
 	const pathname = usePathname();
-	return (
-		<EntryNav
-			isActive={pathname === '/app'}
-			href="/app"
-			title="Today's Entry"
-			{...props}
-		/>
-	);
+	return <EntryNav isActive={pathname === '/app'} href="/app" title="Today's Entry" {...props} />;
 }

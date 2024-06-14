@@ -30,8 +30,6 @@ export default function EntryPage(props: IEntryPageProps) {
 				entryText,
 				entryId: entry?.id,
 			});
-
-			setEntry(updateRes.entry);
 		}
 	}
 
@@ -50,9 +48,7 @@ export default function EntryPage(props: IEntryPageProps) {
 		open: false,
 		isDeleting: false,
 	});
-	const [deleteStatus, setDeleteStatus] = useState<'error' | 'success' | null>(
-		null
-	);
+	const [deleteStatus, setDeleteStatus] = useState<'error' | 'success' | null>(null);
 
 	async function deleteEntry() {
 		try {

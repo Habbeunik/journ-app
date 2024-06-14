@@ -22,8 +22,7 @@ function AuthLayout({ children }: { children: ReactNode }) {
 					<Typography level="h1">JournApp</Typography>
 				</Stack>
 				<Typography>
-					Unlike other journaling platforms, you can write as much and as often
-					as you like, all for free.
+					Encrypted journaling platforms, only you get to read your journal!.
 				</Typography>
 			</Box>
 			{children}
